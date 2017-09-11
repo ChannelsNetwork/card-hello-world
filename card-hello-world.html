@@ -1,0 +1,44 @@
+<link rel="import" href="../polymer-channels-card/polymer-channels-card.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+
+<dom-module id="card-hello-world-composer">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
+    <div class="horizontal layout center">
+      <paper-input id="input" placeholder="Enter text here"></paper-input>
+      <paper-button on-click="onSendClick" raised>Send</paper-button>
+    </div>
+  </template>
+  <script>
+    class CardHelloWorldComposer extends PolymerChannelsCardComposer {
+      static get is() {
+        return 'card-hello-world-composer';
+      }
+      onSendClick() {
+        if (this.$.input.value) {
+          this.send({
+            text: this.$.input.value
+          });
+        }
+      }
+    }
+    window.customElements.define(CardHelloWorldComposer.is, CardHelloWorldComposer);
+  </script>
+</dom-module>
+
+<dom-module id="card-hello-world-viewer">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
+    <div>{{data.text}}</div>
+  </template>
+  <script>
+    class CardHelloWorldViewer extends PolymerChannelsCardViewer {
+      static get is() {
+        return 'card-hello-world-viewer';
+      }
+    }
+    window.customElements.define(CardHelloWorldViewer.is, CardHelloWorldViewer);
+  </script>
+</dom-module>
