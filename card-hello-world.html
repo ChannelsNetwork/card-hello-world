@@ -26,6 +26,10 @@
           recommendedLinkUrl: String
         };
       }
+      connectedCallback() {
+        super.connectedCallback();
+        this.set('recommendedTitle', "Hello World");
+      }
       getSharedState() {
         // Replace this with the appropriate code to return the state information that will be passed to the
         // viewer when the card is opened
@@ -37,12 +41,11 @@
         };
       }
       _onContentChanged() {
-        const isReady = this.$.contents.textContent.trim().length > 0;
+        this.set('recommendedText', this.$.contents.textContent);
         this.dispatchEvent(new CustomEvent('shared-state-changed', { bubbles: true, composed: true, detail: {} }));
+        const isReady = this.$.contents.textContent.trim().length > 0;
         if (isReady !== this.ready) {
           this.set('ready', isReady);
-          this.set('recommendedTitle', "Hello World");
-          this.set('recommendedText', this.$.contents.textContent);
           this.dispatchEvent(new CustomEvent('ready-changed', { bubbles: true, composed: true, detail: { ready: this.ready } }));
         }
       }
