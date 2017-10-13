@@ -3,22 +3,30 @@
 <dom-module id="card-hello-world-composer">
   <template>
     <style>
-      .container {
+      :host {
         max-width: 600px;
         margin: 0 auto;
+        box-sizing: border-box;
+      }
+
+      .container {
+        padding: 5px;
+        box-sizing: content-box;
       }
 
       #contents {
-        border: 1px solid blue;
-        padding: 3px;
         background-color: white;
         text-align: left;
+        width: 100%;
+        font-size: 12px;
+        border: 0;
+        outline: 0;
       }
     </style>
     <div class="container">
       <!-- Replace this with your composer markup that lets the user who is going to post a card
       populate its contents -->
-      <div id="contents" contentEditable on-input="_onContentChanged"></div>
+      <input type="text" placeholder="Enter your card text here" id="contents" on-input="_onContentChanged">
     </div>
   </template>
   <script>
@@ -46,15 +54,15 @@
         // viewer when the card is opened
         return {
           properties: {
-            content: this.$.contents.textContent
+            content: this.$.contents.value
           },
           collections: {}
         };
       }
       _onContentChanged() {
-        this.set('recommendedText', this.$.contents.textContent);
+        this.set('recommendedText', this.$.contents.value);
         this.dispatchEvent(new CustomEvent('shared-state-changed', { bubbles: true, composed: true, detail: {} }));
-        const isReady = this.$.contents.textContent.trim().length > 0;
+        const isReady = this.$.contents.value.trim().length > 0;
         if (isReady !== this.ready) {
           this.set('ready', isReady);
           this.dispatchEvent(new CustomEvent('ready-changed', { bubbles: true, composed: true, detail: { ready: this.ready } }));
