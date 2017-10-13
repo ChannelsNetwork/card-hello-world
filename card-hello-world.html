@@ -44,7 +44,7 @@
       connectedCallback() {
         super.connectedCallback();
         this.set('recommendedTitle', "Hello World");
-        this.set('recommendedImageUrl', "https://goo.gl/images/9K9Tr3");
+        this.set('recommendedImageUrl', this.resolvePath("./helloWorld.png"));
       }
       getSharedState() {
         // Replace this with the appropriate code to return the state information that will be passed to the
