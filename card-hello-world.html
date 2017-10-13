@@ -61,7 +61,7 @@
         this.dispatchEvent(new CustomEvent('shared-state-changed', { bubbles: true, composed: true, detail: {} }));
         const isReady = this.$.contents.value.trim().length > 0;
         if (isReady !== this.stateReady) {
-          this.set('ready', isReady);
+          this.set('stateReady', isReady);
           this.dispatchEvent(new CustomEvent('state-ready-changed', { bubbles: true, composed: true, detail: { ready: this.stateReady } }));
         }
       }
