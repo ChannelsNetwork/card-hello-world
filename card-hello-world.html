@@ -62,7 +62,7 @@
         const isReady = this.$.contents.value.trim().length > 0;
         if (isReady !== this.ready) {
           this.set('ready', isReady);
-          this.dispatchEvent(new CustomEvent('ready-changed', { bubbles: true, composed: true, detail: { ready: this.ready } }));
+          this.dispatchEvent(new CustomEvent('state-ready-changed', { bubbles: true, composed: true, detail: { ready: this.ready } }));
         }
       }
     }
