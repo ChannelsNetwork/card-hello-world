@@ -1,26 +1,47 @@
-<link rel="import" href="../polymer-channels-card/polymer-channels-card.html">
-<link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../polymer/polymer-element.html">
 
 <dom-module id="card-hello-world-composer">
   <template>
-    <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
-    <div class="horizontal layout center">
-      <paper-input id="input" placeholder="Enter text here"></paper-input>
-      <paper-button on-click="onSendClick" raised>Send</paper-button>
+    <style>
+    </style>
+    <div>
+      <!-- Replace this with your composer markup that lets the user who is going to post a card
+      populate its contents -->
+      <div id="contents" contentEditable placeholder="Enter card contents" on-input="_onContentChanged"></div>
     </div>
   </template>
   <script>
-    class CardHelloWorldComposer extends PolymerChannelsCardComposer {
-      static get is() {
-        return 'card-hello-world-composer';
+    class CardHelloWorldComposer extends Polymer.Element {
+      static get is() { return 'card-hello-world-composer'; }
+      static get properties() {
+        return {
+          // Following populated by container
+          services: Object,             // .upload(file) => Promise<String>
+          author: Object,               // .imageUrl, .handle, .name
+          // Following populated by this composer and available to container
+          ready: Boolean,
+          recommendedImageUrl: String,
+          recommendedTitle: String,
+          recommendedText: String,
+          recommendedLinkUrl: String
+        };
       }
-      onSendClick() {
-        if (this.$.input.value) {
-          this.send({
-            text: this.$.input.value
-          });
+      getSharedState() {
+        // Replace this with the appropriate code to return the state information that will be passed to the
+        // viewer when the card is opened
+        return {
+          properties: {
+            content: this.$.contents.textContent
+          },
+          collections: {}
+        };
+      }
+      _onContentChanged() {
+        const isReady = this.$.contents.textContent.trim().length > 0;
+        this.dispatchEvent(new CustomEvent('shared-state-changed', { bubbles: true, composed: true, detail: {} }));
+        if (isReady !== this.ready) {
+          this.set('ready', isReady);
+          this.dispatchEvent(new CustomEvent('ready-changed', { bubbles: true, composed: true, detail: { ready: this.ready } }));
         }
       }
     }
@@ -30,13 +51,20 @@
 
 <dom-module id="card-hello-world-viewer">
   <template>
-    <style is="custom-style" include="iron-flex iron-flex-alignment"></style>
-    <div>{{data.text}}</div>
+    <div>
+      <div>[[sharedState.properties.content]]</div>
+    </div>
   </template>
   <script>
-    class CardHelloWorldViewer extends PolymerChannelsCardViewer {
-      static get is() {
-        return 'card-hello-world-viewer';
+    class CardHelloWorldViewer extends Polymer.Element {
+      static get is() { return 'card-hello-world-viewer'; }
+      static get properties() {
+        return {
+          // Following are populated by the container
+          sharedState: Object,    // .properties .collections
+          author: Object,         // .handle, .name, .imageUrl
+          user: Object            // .handle, .name, .imageUrl
+        };
       }
     }
     window.customElements.define(CardHelloWorldViewer.is, CardHelloWorldViewer);
