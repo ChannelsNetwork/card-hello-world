@@ -44,7 +44,7 @@
       connectedCallback() {
         super.connectedCallback();
         this.set('recommendedTitle', "Hello World");
-        this.set('recommendedImageUrl', this.resolvePath("./helloWorld.png"));
+        this.set('recommendedImageUrl', Polymer.ResolveUrl.resolveUrl("./helloWorld.png", this.importPath));
       }
       getSharedState() {
         // Replace this with the appropriate code to return the state information that will be passed to the
