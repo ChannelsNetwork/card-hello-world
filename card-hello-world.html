@@ -41,6 +41,8 @@
         this.dispatchEvent(new CustomEvent('shared-state-changed', { bubbles: true, composed: true, detail: {} }));
         if (isReady !== this.ready) {
           this.set('ready', isReady);
+          this.set('recommendedTitle', "Hello World");
+          this.set('recommendedText', this.$.contents.textContent);
           this.dispatchEvent(new CustomEvent('ready-changed', { bubbles: true, composed: true, detail: { ready: this.ready } }));
         }
       }
