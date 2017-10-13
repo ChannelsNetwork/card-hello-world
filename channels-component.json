@@ -1,5 +1,5 @@
 {
   "composerTag": "card-hello-world-composer",
   "viewerTag": "card-hello-world-viewer",
-  "iconUrl": "./hello.png"
+  "iconUrl": "./icon.png"
 }
