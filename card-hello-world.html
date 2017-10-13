@@ -34,7 +34,7 @@
           services: Object,             // .upload(file) => Promise<String>
           author: Object,               // .imageUrl, .handle, .name
           // Following populated by this composer and available to container
-          ready: { type: Boolean, value: function () { return false; } },
+          stateReady: Boolean,
           recommendedImageUrl: String,
           recommendedTitle: String,
           recommendedText: String,
