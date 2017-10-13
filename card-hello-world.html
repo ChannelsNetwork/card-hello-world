@@ -3,11 +3,22 @@
 <dom-module id="card-hello-world-composer">
   <template>
     <style>
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      #contents {
+        border: 1px solid blue;
+        padding: 3px;
+        background-color: white;
+        text-align: left;
+      }
     </style>
-    <div>
+    <div class="container">
       <!-- Replace this with your composer markup that lets the user who is going to post a card
       populate its contents -->
-      <div id="contents" contentEditable placeholder="Enter card contents" on-input="_onContentChanged"></div>
+      <div id="contents" contentEditable on-input="_onContentChanged"></div>
     </div>
   </template>
   <script>
