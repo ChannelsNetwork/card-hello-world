@@ -14,7 +14,7 @@
     <div class="container">
       <!-- Replace this with your composer markup that lets the user who is going to post a card
       populate its contents -->
-      <soso-text-input id="content" placeholder="Enter your card text here" label="Card Text" on-input="_onContentChanged"></soso-text-input>
+      <soso-text-input id="content" placeholder="Enter your card text here" label="Card Text" on-input="_onContentInput" on-change="_onContentChange"></soso-text-input>
     </div>
   </template>
   <script>
@@ -26,7 +26,7 @@
           services: Object,             // .upload(file) => Promise<String>
           author: Object,               // .imageUrl, .handle, .name
           // private variables
-          _summary: object,
+          _summary: Object,
           _readyState: {
             type: Boolean,
             value: false
@@ -62,9 +62,12 @@
         return this._readyState;
       }
 
-      _onContentChanged() {
+      _onContentChange() {
         this._summary.text = this.$.content.value
         this.dispatchEvent(new CustomEvent('shared-state-change', { bubbles: true, composed: true }));
+      }
+
+      _onContentInput() {
         const isReady = this.$.content.value.trim().length > 0;
         if (isReady != this._readyState) {
           this._readyState = isReady;
