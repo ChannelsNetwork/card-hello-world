@@ -1,28 +1,20 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../soso-text-input//soso-text-input.html">
 
 <dom-module id="card-hello-world-composer">
   <template>
     <style>
       .container {
-        width: 100%;
         max-width: 600px;
         margin: 0 auto;
         box-sizing: border-box;
-      }
-
-      #contents {
-        background-color: white;
-        text-align: left;
-        width: 100%;
-        font-size: 16px;
-        border: 0;
-        outline: 0;
+        padding: 40px 15px;
       }
     </style>
     <div class="container">
       <!-- Replace this with your composer markup that lets the user who is going to post a card
       populate its contents -->
-      <input type="text" placeholder="Enter your card text here" id="contents" on-input="_onContentChanged">
+      <soso-text-input id="content" placeholder="Enter your card text here" label="Card Text" on-input="_onContentChanged"></soso-text-input>
     </div>
   </template>
   <script>
@@ -33,36 +25,50 @@
           // Following populated by container
           services: Object,             // .upload(file) => Promise<String>
           author: Object,               // .imageUrl, .handle, .name
-          // Following populated by this composer and available to container
-          stateReady: Boolean,
-          recommendedImageUrl: String,
-          recommendedTitle: String,
-          recommendedText: String,
-          recommendedLinkUrl: String
+          // private variables
+          _summary: object,
+          _readyState: {
+            type: Boolean,
+            value: false
+          }
         };
       }
-      connectedCallback() {
-        super.connectedCallback();
-        this.set('recommendedTitle', "Hello World");
-        this.set('recommendedImageUrl', "/s/samples/helloWorld.png");
+
+      constructor() {
+        super();
+        this._summary = {
+          title: "Hello Channels",
+          imageURL: "/s/samples/helloWorld.png"
+        };
       }
-      getSharedState() {
+
+      get summary() {
+        // Summary of the card as shown in card preview
+        return this._summary;
+      }
+
+      get sharedState() {
         // Replace this with the appropriate code to return the state information that will be passed to the
         // viewer when the card is opened
         return {
           properties: {
-            content: this.$.contents.value
+            content: this.$.content.value
           },
           collections: {}
-        };
+        }
       }
+
+      get isReady() {
+        return this._readyState;
+      }
+
       _onContentChanged() {
-        this.set('recommendedText', this.$.contents.value);
-        this.dispatchEvent(new CustomEvent('shared-state-changed', { bubbles: true, composed: true, detail: {} }));
-        const isReady = this.$.contents.value.trim().length > 0;
-        if (isReady !== this.stateReady) {
-          this.set('stateReady', isReady);
-          this.dispatchEvent(new CustomEvent('state-ready-changed', { bubbles: true, composed: true, detail: { ready: this.stateReady } }));
+        this._summary.text = this.$.content.value
+        this.dispatchEvent(new CustomEvent('shared-state-change', { bubbles: true, composed: true }));
+        const isReady = this.$.content.value.trim().length > 0;
+        if (isReady != this._readyState) {
+          this._readyState = isReady;
+          this.dispatchEvent(new CustomEvent('state-ready-change', { bubbles: true, composed: true, detail: { ready: isReady } }));
         }
       }
     }
@@ -72,7 +78,15 @@
 
 <dom-module id="card-hello-world-viewer">
   <template>
-    <div>
+    <style>
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        box-sizing: border-box;
+        padding: 40px 15px;
+      }
+    </style>
+    <div class="container">
       <div>[[sharedState.properties.content]]</div>
     </div>
   </template>
