@@ -1,5 +1,7 @@
 {
   "composerTag": "card-hello-world-composer",
   "viewerTag": "card-hello-world-viewer",
-  "iconUrl": "./icon.png"
+  "iconUrl": "./icon.png",
+  "developerFraction": 0.05,
+  "developerAddress": "r6hEHz22B/RJ2jt/Sr/7d9rp2x4="
 }
